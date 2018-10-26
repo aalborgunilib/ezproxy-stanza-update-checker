@@ -1,12 +1,12 @@
 # ezproxy-stanza-update-checker
-Script to check for official stanza updates to the OCLC EZproxy configuration files in local deployments.
+Script to check for official stanza updates to the [OCLC EZproxy](https://www.oclc.org/en/ezproxy.html) configuration files in local deployments.
 
 ## Keep your local configuration updated
 One key issue of running a self-hosted installation of EZproxy on your local server is to keep your configuration up-to-date with the official supported configuration file snippets (stanzas) provided by OCLC.
 
 To me it would seem to be quite easy for OCLC to make a provisioning system to push these stanzas out to the customer. But it is probably one of the key advantages of the more expensive SaaS solution.
 
-This (crude) script can help you a bit by comparing the official RSS feed of recently updated stanzas with your local configuration files and tell you when it is time to update your stanza or when you are safe.
+This (crude) script can help you a bit by comparing the official [RSS feed](https://www.oclc.org/support/services/ezproxy/database-setup.en.rss) of recently updated stanzas with your local configuration files and tell you when it is time to update your stanza or when you are safe.
 
 ## Prerequisites
 First, the script will need your configuration files to follow a certain syntax. Don’t worry. It is quite easy.
