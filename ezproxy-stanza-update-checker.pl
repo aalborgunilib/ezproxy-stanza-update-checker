@@ -9,12 +9,13 @@ use File::Slurp();
 use Date::Format();
 use Term::ANSIColor;
 
-# Download RSS feed for OCLC EZproxy stanza changes
-my $rss = LWP::Simple::get("https://www.oclc.org/support/services/ezproxy/database-setup.en.rss");
+# Configuration
+my $date_format = "%d-%m-%Y";
+my $rss_feed_address = "https://www.oclc.org/support/services/ezproxy/database-setup.en.rss";
 
 # Get list from command line of configuration files to check
 my @files;
-Getopt::Long::GetOptions ("file=s" => \@files);
+Getopt::Long::GetOptions("file=s" => \@files);
 
 # Default to standard config.txt file
 $files[0] = "config.txt" if ( ! $files[0] );
@@ -31,6 +32,9 @@ foreach my $filename ( @files ) {
 		die "File not found: $filename";
 	}
 }
+
+# Download RSS feed for OCLC EZproxy stanza changes
+my $rss = LWP::Simple::get($rss_feed_address);
 
 # If the RSS file is available
 if ( $rss ) {
@@ -86,9 +90,9 @@ if ( $rss ) {
 							print "    Local stanza needs updating... ";
 							print color('reset');
 							say "Stanza updated on "
-								. Date::Format::time2str("%d-%m-%Y", $updated) 
+								. Date::Format::time2str($date_format, $updated) 
 								. " and feed updated on " 
-								. Date::Format::time2str("%d-%m-%Y", $date);
+								. Date::Format::time2str($date_format, $date);
 							say "    " . $link;
 						}
 						# The local stanza is equal to the one in the RSS feed
