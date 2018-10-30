@@ -77,9 +77,15 @@ Checking stanza from: https://help.oclc.org/Library_Management/EZproxy/Database_
 From the above output you can read that you will need to update the __Science - AAAS__ stanza as it seems to be out-of-date. The __IEEE Xplore__ has no (updated) information in the local title and you should manually check the stanza. The __Journal of Orthopaedic and Sports Physical Therapy__ is up-to-date.
 
 ## Additional notes
-As the information contained within the RSS feed can be changed quite rappidly (and older entries disapear) you should run this script quite often (weekly probably). Add it to your crontab and mail the output to your email address. Or, write a plugin to your monitoring system if you have one to send automatic alerts when stanzas are out-of-date.
+As the information contained within the RSS feed can be changed quite rappidly (and older entries disapear) you should run this script quite often (twice a week probably). Add it to your crontab and send the output to your email address. Or, write a plugin to your monitoring system if you have one to send automatic alerts when stanzas are out-of-date.
 
-An updated OCLC stanza pages could be updated with additional information regarding the database configuration and not an update to the stanza itself. You will have to manually check this. This script only flags changes to the stanza. So, if a stanza suddenly shows up as being up-to-date with a non recent date then something other than the stanza has probably been updated. Check out for yourself by reading the page.
+An updated OCLC stanza pages could be enhanced with additional information regarding the database configuration and not an update to the stanza itself. You will have to manually check this. This script only flags changes to the stanza. So, if a stanza suddenly shows up as being up-to-date with a non recent date then something other than the stanza has probably been updated. Check out for yourself by reading the page.
 
-The script is written in Perl and does require some non-core modules to be installed. If have no idea of what I am talking about then 
-consult with local IT staff as you probably need their help to get this to work.
+The script is written in Perl and does require some non-core modules to be installed. If you have no idea of what I am talking about then consult with local IT staff as you probably need their help to get this to work.
+
+## Crontab example
+Get an email update tuesday and friday morning with the example below. For conversion between ANSI and HTML the [ansifilter](https://gitlab.com/saalen/ansifilter) is required.
+
+```
+30 07 * * 2,5 ( echo To: mail@example.com ; echo From: EZproxy Stanza Check \<mail@example.com\> ; echo "Content-Type: text/html; " ; echo Subject: EZproxy stanza update checker ; echo ; ( perl /path/ezproxy-stanza-update-checker.pl --file /usr/local/ezproxy/config.txt | ansifilter -H ) ) | /usr/sbin/sendmail -t
+```
