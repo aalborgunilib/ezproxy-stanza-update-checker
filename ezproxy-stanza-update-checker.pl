@@ -74,7 +74,7 @@ if ( $rss ) {
 					my $stanza = $1;
 					my $updated;
 					# Try to get the "updated on" info from the local stanza and convert to epoch
-					if ( $stanza =~ m/(?:updated[ ])?(\d{8})/sxm ) {
+					if ( $stanza =~ m/(?:updated[ ])?(\d{4}-?\d{2}-?\d{2})/sxm ) {
 						$updated = Date::Parse::str2time($1);
 					}
 					# Display matching file
