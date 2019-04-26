@@ -45,6 +45,7 @@ if ( $rss ) {
 		);
 
 	# Iterate through the <item></item> parts of the feed
+	my @stanzas_seen;
 	foreach my $item ( @{$stanza_list->{channel}->{item}} ) {
 		# Get database title
 		my $title = $item->{title};
@@ -62,6 +63,11 @@ if ( $rss ) {
 		# The link points back to the OCLC help page with the current stanza (our "foreign" key)
 		if ( $item->{link} ) {
 			my $link = $item->{link};
+
+			# It the stanza was updated before in the current RSS feed then skip it
+			next if grep $_  eq $link, @stanzas_seen;
+			push @stanzas_seen, $link;
+
 			# Check link against content of config files (one at a time)
 			for ( my $c = 0; $c < scalar(@configfiles); $c++ ) {
 				# REM config file number: $c
@@ -70,7 +76,7 @@ if ( $rss ) {
 				
 				# Match content of config file with the occurence of our "foreign" key (the link)
 				if ( $configfiles[$c] =~ m/$link\n/sxm && $configfiles[$c] =~ m/$link(.*?\n\n)/sxm ) {
-					say "Checking stanza from: " . color('yellow') . "$link" . color('reset') if $c == 0;
+					say "Checking OCLC official stanza for: " . color('bold black') . "$title" . color('reset') if $c == 0;
 					my $stanza = $1;
 					my $updated;
 					# Try to get the "updated on" info from the local stanza and convert to epoch
@@ -79,39 +85,50 @@ if ( $rss ) {
 					}
 					# Display matching file
 					print color('bold blue');
-					say "    in: $files[$c]";
+					say "    found local copy in file: $files[$c]";
 					print color('reset');
-					say "    found local copy of OCLC official stanza for: \"$title\"";
 					# If possible, try to compare the RSS "updated on" with the local "updated on" epoch time
 					if ( $updated ) {
 						# The local stanza is older than the one in the RSS feed
 						if ( $updated < $date ) {
-							print color('red');
-							print "    Local stanza needs updating... ";
-							print color('reset');
-							say "Stanza updated on "
+							say "    Local stanza updated on "
+								. color('bold')
 								. Date::Format::time2str($date_format, $updated) 
-								. " and feed updated on " 
-								. Date::Format::time2str($date_format, $date);
+								. color('reset')
+								. " and official stanza updated on " 
+								. color('bold')
+								. Date::Format::time2str($date_format, $date)
+								. color('reset');
+							print color('red');
+							print "    Local stanza needs updating...\n";
+							print color('reset');
 							say "    " . $link;
+							
 						}
 						# The local stanza is equal to the one in the RSS feed
 						elsif ( $updated == $date ) {
 							print color('green');
-							print "    Local stanza is up-to-date...";
+							print "    Local stanza is up-to-date...\n";
 							print color('reset');
 						}
 					}
 					# It was impossible to check if the stanza is older or equal to the one from the RSS feed
 					else {
-						print "    Local stanza needs manual checking...";
+						print color('red');
+						print "    Local stanza needs manual checking (no datestamp to compare)...\n";
+						print color('reset');
 						say "    " . $link;
 					}
 					say "";
 				}
 				# We have no reference to the updated stanza in our config files
 				else {
-					say "Checking stanza from: " . color('yellow') . "$link" . color('reset') if $c == 0;
+					if ( $c == 0 ) {
+						say "Checking OCLC official stanza for: " . color('bold black') . "$title" . color('reset') if $c == 0;
+						print color('bold blue');
+						say "    not found\n";
+						print color('reset');
+					}
 				}
 			}
 		}
