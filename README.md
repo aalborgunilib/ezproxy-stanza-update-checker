@@ -50,31 +50,41 @@ perl ./ezproxy-stanza-update-checker.pl --file /usr/local/ezproxy/config.txt
 And the output might look something like:
 
 ```
-Checking stanza from: https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/NationalJournal
-Checking stanza from: https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/ScienceAAAS
-    in: /usr/local/ezproxy/config.txt
-    found local copy of OCLC official stanza for: "Science - AAAS"
-    Local stanza needs updating... Stanza updated on 23-09-2018 and feed updated on 23-10-2018
-    https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/ScienceAAAS
+Checking OCLC official stanza for: American Physiological Society
+    found local copy in file: /usr/local/ezproxy/config.txt
+    Local stanza updated on 20-04-2019 and official stanza updated on 25-04-2019
+    Local stanza needs updating...
+    https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/physiology
 
-Checking stanza from: https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/SymptomMedia
-Checking stanza from: https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/IEEE_Xplore
-    in: /usr/local/ezproxy/config.txt
-    found local copy of OCLC official stanza for: "IEEE Xplore"
-    Local stanza needs manual checking...    https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/IEEE_Xplore
+Checking OCLC official stanza for: University of California Press
+    found local copy in file: /usr/local/ezproxy/config.txt
+    Local stanza needs manual checking (no datestamp to compare)...
+    https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/ucpress
 
-Checking stanza from: https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/SDU
-Checking stanza from: https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/jospt
-    in: /usr/local/ezproxy/config.txt
-    found local copy of OCLC official stanza for: "Journal of Orthopaedic and Sports Physical Therapy"
+Checking OCLC official stanza for: American Society for Microbiology
+    found local copy in file: /usr/local/ezproxy/config.txt
     Local stanza is up-to-date...
-Checking stanza from: https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/Westlaw_China
-Checking stanza from: https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/Westlaw
-Checking stanza from: https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/Womens_Pregnancy_and_Breastfeeding_Medicines_Guide
-Checking stanza from: https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/Sabinet_ePublications
+
+Checking OCLC official stanza for: American Society of Clinical Oncology (ASCO)
+    found local copy in file: /usr/local/ezproxy/config.txt
+    Local stanza is up-to-date...
+
+Checking OCLC official stanza for: AAO Ebooks Library
+    not found
+
+Checking OCLC official stanza for: VLex
+    not found
+
+Checking OCLC official stanza for: Ovid
+    found local copy in file: /usr/local/ezproxy/aau_config.txt
+    Local stanza is up-to-date...
+
+Checking OCLC official stanza for: Philosophy Now
+    not found
+
 ```
 
-From the above output you can read that you will need to update the __Science - AAAS__ stanza as it seems to be out-of-date. The __IEEE Xplore__ has no (updated) information in the local title and you should manually check the stanza. The __Journal of Orthopaedic and Sports Physical Therapy__ is up-to-date.
+From the above output you can read that you will need to update the __American Physiological Society__ stanza as it seems to be out-of-date. The __University of California Press__ stanza has no (updated) information in the local title and you should check the stanza manually. The stanza for __American Society for Microbiology__ is up-to-date.
 
 ## Additional notes
 As the information contained within the RSS feed can be changed quite rappidly (and older entries disapear) you should run this script quite often (twice a week probably). Add it to your crontab and send the output to your email address. Or, write a plugin to your monitoring system if you have one to send automatic alerts when stanzas are out-of-date.
