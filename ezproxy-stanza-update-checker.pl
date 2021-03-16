@@ -12,6 +12,7 @@ use Term::ANSIColor;
 # Configuration
 my $date_format = "%d-%m-%Y";
 my $rss_feed_address = "https://www.oclc.org/support/services/ezproxy/database-setup.en.rss";
+my $most_recent_address = "https://help.oclc.org/Library_Management/EZproxy/Database_stanzas/000_Database_stanzas_recent?sl=en";
 
 # Get list from command line of configuration files to check
 my @files;
@@ -43,6 +44,12 @@ if ( $rss ) {
 		'ForceArray' => 0,
 		'KeyAttr' => []
 		);
+
+	# Header
+	print color('bold blue');
+	say $stanza_list->{channel}->{description};
+	say "-" x length($stanza_list->{channel}->{description});
+	print "\n\n" . color('reset');
 
 	# Iterate through the <item></item> parts of the feed
 	my @stanzas_seen;
@@ -134,4 +141,9 @@ if ( $rss ) {
 		}
 	}
 }
+
+# Footer
+say "\nCheck the full list of recently updated database stanzas (previous three months) at:";
+say $most_recent_address;
+
 
