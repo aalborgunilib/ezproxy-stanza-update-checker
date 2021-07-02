@@ -82,12 +82,12 @@ if ( $rss ) {
 				# REM config file contents: $configfiles[$c]
 				
 				# Match content of config file with the occurence of our "foreign" key (the link)
-				if ( $configfiles[$c] =~ m/$link\n/sxm && $configfiles[$c] =~ m/$link(.*?\n\n)/sxm ) {
+				if ( $configfiles[$c] =~ m/$link\n/sxmi && $configfiles[$c] =~ m/$link(.*?\n\n)/sxmi ) {
 					say "Checking OCLC official stanza for: " . color('bold black') . "$title" . color('reset') if $c == 0;
 					my $stanza = $1;
 					my $updated;
 					# Try to get the "updated on" info from the local stanza and convert to epoch
-					if ( $stanza =~ m/(?:updated[ ])?(\d{4}-?\d{2}-?\d{2})/sxm ) {
+					if ( $stanza =~ m/(?:updated[ ])?(\d{4}-?\d{2}-?\d{2})/sxmi ) {
 						$updated = Date::Parse::str2time($1);
 					}
 					# Display matching file
