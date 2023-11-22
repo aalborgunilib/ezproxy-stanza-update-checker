@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+# Add cpanfile requirements managed by Carton to the path
+use lib qw(local/lib/perl5);
+
 use Modern::Perl;
 use LWP::Simple();
 use Getopt::Long();
@@ -80,9 +83,13 @@ if ( $rss ) {
 				# REM config file number: $c
 				# REM config file name: $files[$c]
 				# REM config file contents: $configfiles[$c]
+
+				# Fix links for regex match by escaping ( and ) so they will not fail on e.g.
+				# https://help.oclc.org/Library_Management/EZproxy/EZproxy_database_stanzas/Database_stanzas_W/Web_of_Science_(formerly_Web_of_Knowledge)
+				my $link_escaped = $link =~ s{([\(\)])}{\\$1}gr;
 				
 				# Match content of config file with the occurence of our "foreign" key (the link)
-				if ( $configfiles[$c] =~ m/$link\n/sxmi && $configfiles[$c] =~ m/$link(.*?\n\n)/sxmi ) {
+				if ( $configfiles[$c] =~ m/$link_escaped\n/sxmi && $configfiles[$c] =~ m/$link_escaped(.*?\n\n)/sxmi ) {
 					say "Checking OCLC official stanza for: " . color('bold black') . "$title" . color('reset') if $c == 0;
 					my $stanza = $1;
 					my $updated;
