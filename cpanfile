@@ -1,5 +1,5 @@
 requires "Modern::Perl";
-requires "LWP::Simple";
+requires "LWP::Curl";
 requires "Getopt::Long";
 requires "XML::Simple";
 requires "Date::Parse";
