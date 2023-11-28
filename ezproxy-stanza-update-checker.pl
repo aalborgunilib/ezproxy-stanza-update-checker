@@ -4,7 +4,7 @@
 use lib qw(local/lib/perl5);
 
 use Modern::Perl;
-use LWP::Simple();
+use LWP::Curl();
 use Getopt::Long();
 use XML::Simple qw(:strict);
 use Date::Parse();
@@ -38,7 +38,8 @@ foreach my $filename ( @files ) {
 }
 
 # Download RSS feed for OCLC EZproxy stanza changes
-my $rss = LWP::Simple::get($rss_feed_address);
+my $lwpcurl = LWP::Curl->new();
+my $rss = $lwpcurl->get($rss_feed_address);
 
 # If the RSS file is available
 if ( $rss ) {
